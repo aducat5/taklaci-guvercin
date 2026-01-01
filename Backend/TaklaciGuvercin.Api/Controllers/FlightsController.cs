@@ -156,6 +156,43 @@ public class FlightsController : ControllerBase
         return Ok(Result.Success<IEnumerable<FlightSessionDto>>(result));
     }
 
+    [HttpGet("player/{playerId}/history")]
+    public async Task<ActionResult<Result<List<FlightSessionDto>>>> GetFlightHistory(Guid playerId, [FromQuery] int count = 10)
+    {
+        var sessions = await _unitOfWork.FlightSessions.GetByPlayerIdAsync(playerId, count);
+        var result = new List<FlightSessionDto>();
+
+        foreach (var session in sessions)
+        {
+            var birds = await _unitOfWork.Birds.GetByIdsAsync(session.BirdIds);
+            result.Add(MapToDto(session, birds));
+        }
+
+        return Ok(Result.Success(result));
+    }
+
+    [HttpGet("{sessionId}/nearby")]
+    public async Task<ActionResult<Result<List<FlightSessionDto>>>> GetNearbyFlights(Guid sessionId, [FromQuery] double radiusMeters = 1000)
+    {
+        var session = await _unitOfWork.FlightSessions.GetByIdAsync(sessionId);
+        if (session == null || !session.IsActive)
+            return NotFound(Result.Failure<List<FlightSessionDto>>("Flight session not found or not active"));
+
+        var activeFlights = await _unitOfWork.FlightSessions.GetAllActiveAsync();
+        var nearbyFlights = activeFlights
+            .Where(f => f.Id != sessionId && f.IsActive && session.IsInEncounterRange(f, radiusMeters))
+            .ToList();
+
+        var result = new List<FlightSessionDto>();
+        foreach (var flight in nearbyFlights)
+        {
+            var birds = await _unitOfWork.Birds.GetByIdsAsync(flight.BirdIds);
+            result.Add(MapToDto(flight, birds));
+        }
+
+        return Ok(Result.Success(result));
+    }
+
     private static FlightSessionDto MapToDto(FlightSession session, IEnumerable<Bird> birds) => new()
     {
         Id = session.Id,

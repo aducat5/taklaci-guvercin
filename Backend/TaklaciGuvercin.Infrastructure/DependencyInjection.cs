@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaklaciGuvercin.Application.Interfaces;
+using TaklaciGuvercin.Application.Services;
+using TaklaciGuvercin.Infrastructure.BackgroundServices;
 using TaklaciGuvercin.Infrastructure.Data;
 using TaklaciGuvercin.Infrastructure.Repositories;
 
@@ -20,11 +22,23 @@ public static class DependencyInjection
                 npgsqlOptions.CommandTimeout(30);
             }));
 
+        // Repositories
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IBirdRepository, BirdRepository>();
         services.AddScoped<IPlayerRepository, PlayerRepository>();
         services.AddScoped<IFlightSessionRepository, FlightSessionRepository>();
         services.AddScoped<IEncounterRepository, EncounterRepository>();
+
+        // Application Services
+        services.AddScoped<IFlightManagementService, FlightManagementService>();
+        services.AddScoped<IEncounterService, EncounterService>();
+
+        // Background Services
+        services.AddHostedService<FlightExpirationService>();
+        services.AddHostedService<EncounterDetectionService>();
+
+        // Database Seeder
+        services.AddScoped<DatabaseSeeder>();
 
         services.AddSignalR();
 

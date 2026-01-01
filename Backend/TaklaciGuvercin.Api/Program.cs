@@ -1,4 +1,5 @@
 using TaklaciGuvercin.Infrastructure;
+using TaklaciGuvercin.Infrastructure.Data;
 using TaklaciGuvercin.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,14 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Seed database in development
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+    await seeder.SeedAsync();
+}
 
 // Configure pipeline
 if (app.Environment.IsDevelopment())

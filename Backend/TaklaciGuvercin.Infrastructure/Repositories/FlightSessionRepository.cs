@@ -51,4 +51,18 @@ public class FlightSessionRepository : Repository<FlightSession>, IFlightSession
             .ToListAsync(cancellationToken)
             .ContinueWith(t => t.Result.Where(f => f.IsExpired()), cancellationToken);
     }
+
+    public async Task<IEnumerable<FlightSession>> GetByPlayerIdAsync(Guid playerId, int count = 10, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet
+            .Where(f => f.PlayerId == playerId)
+            .OrderByDescending(f => f.StartedAt)
+            .Take(count)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<FlightSession>> GetActiveFlightsAsync(CancellationToken cancellationToken = default)
+    {
+        return await GetAllActiveAsync(cancellationToken);
+    }
 }

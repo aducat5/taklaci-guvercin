@@ -30,5 +30,11 @@ public class BirdSummaryDto
     public BirdStateDto State { get; set; }
     public BirdRarityDto Rarity { get; set; }
     public ElementDto Element { get; set; }
+    public int Leadership { get; set; }
+    public int Loyalty { get; set; }
+    public int Speed { get; set; }
+    public int GeneticDominance { get; set; }
     public int TotalPower { get; set; }
+    public int Health { get; set; }
+    public int Stamina { get; set; }
 }

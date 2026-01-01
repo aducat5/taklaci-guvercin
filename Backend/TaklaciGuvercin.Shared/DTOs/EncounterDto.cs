@@ -20,7 +20,8 @@ public class EncounterDto
 public class EncounterNotification
 {
     public Guid EncounterId { get; set; }
-    public PlayerSummaryDto OpponentPlayer { get; set; } = new();
+    public Guid OpponentPlayerId { get; set; }
+    public PlayerSummaryDto? OpponentPlayer { get; set; }
     public List<BirdSummaryDto> OpponentBirds { get; set; } = new();
     public int OpponentTotalPower { get; set; }
     public int YourTotalPower { get; set; }
