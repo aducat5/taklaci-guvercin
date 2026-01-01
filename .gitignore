@@ -1,0 +1,55 @@
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+*.unitypackage
+*.apk
+*.aab
+
+# Visual Studio cache/options directory
+.vs/
+.vscode/
+
+# .NET
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userprefs
+*.dll
+*.pdb
+*.exe
+*.nupkg
+*.snupkg
+project.lock.json
+.nuget/
+
+# Rider
+.idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Credentials and secrets
+*.env
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Crash reports
+crashlytics-build.properties
+sysinfo.txt
