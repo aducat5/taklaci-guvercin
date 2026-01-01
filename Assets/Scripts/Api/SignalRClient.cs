@@ -83,7 +83,7 @@ namespace TaklaciGuvercin.Api
             // SignalR negotiate endpoint
             string negotiateUrl = hubUrl.Replace("ws://", "http://").Replace("wss://", "https://") + "/negotiate?negotiateVersion=1";
 
-            using var request = UnityWebRequest.Post(negotiateUrl, "");
+            using var request = UnityWebRequest.PostWwwForm(negotiateUrl, "");
             request.SetRequestHeader("Content-Type", "application/json");
 
             yield return request.SendWebRequest();

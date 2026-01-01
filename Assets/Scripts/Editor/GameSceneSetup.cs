@@ -125,13 +125,13 @@ namespace TaklaciGuvercin.Editor
         {
             var screenGO = new GameObject("LoginScreen");
             screenGO.transform.SetParent(parent);
+
+            // Add Image first (creates RectTransform), then stretch
+            var bg = screenGO.AddComponent<Image>();
+            bg.color = new Color(0.1f, 0.1f, 0.15f);
             SetFullStretch(screenGO);
 
             var screen = screenGO.AddComponent<UI.LoginScreen>();
-
-            // Background
-            var bg = screenGO.AddComponent<Image>();
-            bg.color = new Color(0.1f, 0.1f, 0.15f);
 
             // Title
             var titleGO = CreateText(screenGO.transform, "Title", "Taklaci Guvercin", 48);
@@ -215,14 +215,14 @@ namespace TaklaciGuvercin.Editor
         {
             var screenGO = new GameObject("CoopScreen");
             screenGO.transform.SetParent(parent);
+
+            // Add Image first (creates RectTransform), then stretch
+            var bg = screenGO.AddComponent<Image>();
+            bg.color = new Color(0.12f, 0.14f, 0.18f);
             SetFullStretch(screenGO);
             screenGO.SetActive(false);
 
             var screen = screenGO.AddComponent<UI.CoopScreen>();
-
-            // Background
-            var bg = screenGO.AddComponent<Image>();
-            bg.color = new Color(0.12f, 0.14f, 0.18f);
 
             // Header Panel
             var headerPanel = CreatePanel(screenGO.transform, "HeaderPanel", new Color(0.08f, 0.1f, 0.14f));
@@ -244,9 +244,9 @@ namespace TaklaciGuvercin.Editor
             // Bird Grid Area with scroll
             var gridAreaGO = new GameObject("BirdGridArea");
             gridAreaGO.transform.SetParent(screenGO.transform);
-            SetAnchors(gridAreaGO, new Vector2(0.02f, 0.15f), new Vector2(0.98f, 0.88f));
             var gridAreaImage = gridAreaGO.AddComponent<Image>();
             gridAreaImage.color = new Color(0.1f, 0.1f, 0.12f);
+            SetAnchors(gridAreaGO, new Vector2(0.02f, 0.15f), new Vector2(0.98f, 0.88f));
 
             var scrollRect = gridAreaGO.AddComponent<ScrollRect>();
             scrollRect.horizontal = false;
@@ -254,8 +254,8 @@ namespace TaklaciGuvercin.Editor
 
             var viewport = new GameObject("Viewport");
             viewport.transform.SetParent(gridAreaGO.transform);
-            SetFullStretch(viewport);
             viewport.AddComponent<Image>().color = Color.clear;
+            SetFullStretch(viewport);
             viewport.AddComponent<Mask>().showMaskGraphic = false;
             scrollRect.viewport = viewport.GetComponent<RectTransform>();
 
@@ -314,14 +314,14 @@ namespace TaklaciGuvercin.Editor
         {
             var screenGO = new GameObject("FlightScreen");
             screenGO.transform.SetParent(parent);
+
+            // Add Image first (creates RectTransform), then stretch
+            var bg = screenGO.AddComponent<Image>();
+            bg.color = new Color(0.3f, 0.5f, 0.7f);
             SetFullStretch(screenGO);
             screenGO.SetActive(false);
 
             var screen = screenGO.AddComponent<UI.FlightScreen>();
-
-            // Background (sky blue gradient feel)
-            var bg = screenGO.AddComponent<Image>();
-            bg.color = new Color(0.3f, 0.5f, 0.7f);
 
             // Timer Panel (top center)
             var timerPanel = CreatePanel(screenGO.transform, "TimerPanel", new Color(0, 0, 0, 0.5f));
@@ -346,8 +346,9 @@ namespace TaklaciGuvercin.Editor
 
             var birdsContainer = new GameObject("BirdsContainer");
             birdsContainer.transform.SetParent(birdsPanel.transform);
-            SetFullStretch(birdsContainer);
+            birdsContainer.AddComponent<RectTransform>();
             var birdsLayout = birdsContainer.AddComponent<VerticalLayoutGroup>();
+            SetFullStretch(birdsContainer);
             birdsLayout.spacing = 5;
             birdsLayout.padding = new RectOffset(10, 10, 10, 10);
 
@@ -383,14 +384,14 @@ namespace TaklaciGuvercin.Editor
         {
             var screenGO = new GameObject("EncounterScreen");
             screenGO.transform.SetParent(parent);
+
+            // Add Image first (creates RectTransform), then stretch
+            var overlay = screenGO.AddComponent<Image>();
+            overlay.color = new Color(0, 0, 0, 0.7f);
             SetFullStretch(screenGO);
             screenGO.SetActive(false);
 
             var screen = screenGO.AddComponent<UI.EncounterScreen>();
-
-            // Semi-transparent overlay
-            var overlay = screenGO.AddComponent<Image>();
-            overlay.color = new Color(0, 0, 0, 0.7f);
 
             // Encounter Panel
             var encounterPanel = CreatePanel(screenGO.transform, "EncounterPanel", new Color(0.15f, 0.15f, 0.2f));
@@ -415,6 +416,7 @@ namespace TaklaciGuvercin.Editor
 
             var playerBirdsContainer = new GameObject("PlayerBirdsContainer");
             playerBirdsContainer.transform.SetParent(playerPanel.transform);
+            playerBirdsContainer.AddComponent<RectTransform>();
             SetAnchors(playerBirdsContainer, new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.6f));
 
             // VS Text
@@ -434,6 +436,7 @@ namespace TaklaciGuvercin.Editor
 
             var opponentBirdsContainer = new GameObject("OpponentBirdsContainer");
             opponentBirdsContainer.transform.SetParent(opponentPanel.transform);
+            opponentBirdsContainer.AddComponent<RectTransform>();
             SetAnchors(opponentBirdsContainer, new Vector2(0.1f, 0.1f), new Vector2(0.9f, 0.6f));
 
             // Win Chance Slider
