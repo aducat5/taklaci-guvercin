@@ -640,8 +640,20 @@ namespace TaklaciGuvercin.Editor
             var rt = go.GetComponent<RectTransform>() ?? go.AddComponent<RectTransform>();
             rt.anchorMin = min;
             rt.anchorMax = max;
-            rt.offsetMin = Vector2.zero;
-            rt.offsetMax = Vector2.zero;
+            rt.pivot = new Vector2(0.5f, 0.5f);
+
+            // For stretching anchors (min != max), use offsets to fill the anchor area
+            // For point anchors (min == max), preserve sizeDelta for explicit sizing
+            if (min != max)
+            {
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
+            }
+            else
+            {
+                // Center on the anchor point
+                rt.anchoredPosition = Vector2.zero;
+            }
         }
 
         private static GameObject CreatePanel(Transform parent, string name, Color color)
@@ -662,6 +674,11 @@ namespace TaklaciGuvercin.Editor
             tmp.fontSize = fontSize;
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.color = Color.white;
+
+            // Set default size for point anchor positioning
+            var rt = textGO.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(200, fontSize + 10);
+
             return textGO;
         }
 
@@ -672,6 +689,10 @@ namespace TaklaciGuvercin.Editor
 
             var image = buttonGO.AddComponent<Image>();
             image.color = color;
+
+            // Set default size for point anchor positioning
+            var rt = buttonGO.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(120, 40);
 
             var button = buttonGO.AddComponent<Button>();
             button.targetGraphic = image;
@@ -689,6 +710,10 @@ namespace TaklaciGuvercin.Editor
 
             var image = inputGO.AddComponent<Image>();
             image.color = new Color(0.1f, 0.1f, 0.12f);
+
+            // Set default size for point anchor positioning
+            var rt = inputGO.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(300, 40);
 
             // Text Area
             var textAreaGO = new GameObject("Text Area");
@@ -736,11 +761,17 @@ namespace TaklaciGuvercin.Editor
             var sliderGO = new GameObject(name);
             sliderGO.transform.SetParent(parent);
 
+            // Add Image to create RectTransform, then set default size
+            var sliderBg = sliderGO.AddComponent<Image>();
+            sliderBg.color = Color.clear; // Invisible container
+            var rt = sliderGO.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(200, 20);
+
             var bgGO = new GameObject("Background");
             bgGO.transform.SetParent(sliderGO.transform);
-            SetFullStretch(bgGO);
             var bgImage = bgGO.AddComponent<Image>();
             bgImage.color = new Color(0.2f, 0.2f, 0.2f);
+            SetFullStretch(bgGO);
 
             var fillAreaGO = new GameObject("Fill Area");
             fillAreaGO.transform.SetParent(sliderGO.transform);
